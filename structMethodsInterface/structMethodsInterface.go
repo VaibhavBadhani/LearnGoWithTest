@@ -11,5 +11,5 @@ func RectangleArea(object Rectangle) float64 {
 }
 
 func CircleArea(object Circle) float64 {
-	return (math.Pi * (object.radius * object.radius))
+	return (math.Pi * (object.Radius * object.Radius))
 }
