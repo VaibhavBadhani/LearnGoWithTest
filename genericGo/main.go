@@ -1,6 +1,9 @@
 package main
 
-import "fmt"
+import (
+	"fmt"
+	"reflect"
+)
 
 type Stack []interface{}
 
@@ -31,21 +34,36 @@ func (os *OutStack) Put(elem int) {
 
 func main() {
 	// You can push an int and a string to the same stack
-	myStack := &Stack{}
-	myStack.Push(10)
-	myStack.Push("hello")
-	fmt.Println(*myStack...)
-	fmt.Println("Emptying stack")
-	a := myStack.Pop().(int)
-	fmt.Println(a)
-	b := myStack.Pop().(int)
-	fmt.Println(b)
+	// myStack := &Stack{}
+	// myStack.Push(10)
+	// myStack.Push("hello")
+	// fmt.Println(*myStack...)
+	// fmt.Println("Emptying stack")
+	// a := myStack.Pop().(int)
+	// fmt.Println(a)
+	// b := myStack.Pop().(int)
+	// fmt.Println(b)
 
-	//create outer stack
-	myOuterStack := &OutStack{Stack{}}
-	myOuterStack.Put(1)
-	// myOuterStack.Put("As")
-	myOuterStack.IsEmpty()
+	// //create outer stack
+	// myOuterStack := &OutStack{Stack{}}
+	// myOuterStack.Put(1)
+	// // myOuterStack.Put("As")
+	// myOuterStack.IsEmpty()
+
+	s := []interface{}{true, 0, "yes"}
+	e := s[0]
+	fmt.Println(e, reflect.TypeOf(e))
+	//this does not works
+	// if e {
+	// 	fmt.Println("The condition is true")
+	// }
+	//this can be done but may create panic
+	// if e.(bool) {
+	// 	fmt.Println("The condition is true")
+	// }
+	if e == true {
+		fmt.Println("The condition is true")
+	}
 
 }
 
@@ -82,3 +100,13 @@ func main() {
 //     // This will cause a compile-time error!
 //     // intStack.Push("world")
 // }
+
+
+
+
+
+
+
+// Go has no automatic type conversion 
+// Interface values are of type interface
+// until the dynamic type is accessed
