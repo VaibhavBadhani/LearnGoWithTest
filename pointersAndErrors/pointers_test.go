@@ -1,18 +1,42 @@
 package pointersanderrors
 
 import (
-	"fmt"
 	"testing"
 )
 
 func TestWallet(t *testing.T) {
-	wallet := Wallet{}
-	wallet.Deposit(Bitcoin(10))
-	gotBalance := wallet.Balance()
-	// var want Bitcoin = 10
-	want := Bitcoin(10)
-	fmt.Printf("address of balance in test is %p \n", &wallet.balance)
-	if gotBalance != want {
-		t.Errorf("got %s want %d", gotBalance, want)
+
+	assertBalance := func(t testing.TB, wallet Wallet, want Bitcoin) {
+		t.Helper()
+		gotBalance := wallet.Balance()
+		if gotBalance != want {
+			t.Errorf("got %s want %d", gotBalance, want)
+		}
 	}
+
+	assertError := func(t testing.TB, err error) {
+		t.Helper()
+		if err == nil {
+			t.Errorf("wanted a error but didnt get one")
+		}
+	}
+
+	t.Run("deposit", func(t *testing.T) {
+		wallet := Wallet{}
+		wallet.Deposit(Bitcoin(10))
+		assertBalance(t, wallet, Bitcoin(10))
+	})
+
+	t.Run("withdraw", func(t *testing.T) {
+		wallet := Wallet{20}
+		wallet.Withdraw(Bitcoin(10))
+		assertBalance(t, wallet, Bitcoin(10))
+	})
+
+	t.Run("insufficient balance", func(t *testing.T) {
+		wallet := Wallet{20}
+		err := wallet.Withdraw((Bitcoin(100)))
+		assertError(t, err)
+		assertBalance(t, wallet, Bitcoin(20))
+	})
 }
